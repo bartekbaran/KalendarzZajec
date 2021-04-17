@@ -9,12 +9,24 @@ class Database():
         )
         self.connection = pyodbc.connect(self.connectionString, autocommit=True)
         self.cursor = self.connection.cursor()
-        self.printDatabase()
+        # self.printDatabase()
 
     def printDatabase(self):
         self.cursor.execute('Select * from LessonSchedule')
         for row in self.cursor.fetchall():
             print(row)
+
+    def getDatabase(self):
+        listOfClasses = []
+        self.cursor.execute('Select * from LessonSchedule')
+        for row in self.cursor.fetchall():
+            listOfClasses.append(row)
+        return listOfClasses
+
+    def getNumberOfRecords(self):
+        self.cursor.execute('Select * from LessonSchedule')
+        rows = self.cursor.fetchall()
+        return len(rows)
 
     def addingToDatabase(self, les, sta, end, dotw):
         self.cursor.execute("INSERT INTO LessonSchedule (Lesson, Start, End, DayOfTheWeek) VALUES (?, ?, ?, ?)",
