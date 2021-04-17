@@ -16,8 +16,8 @@ class Application():
         dayOfTheWeekLabel = []
 
         # Creating Buttons visible in the left part of screen
-        # addingClassButton = Button(self.root, text="Add new class", width=25, height=10,command=ButtonFunctions.addClass(self.database))
-        addingClassButton = Button(self.root, text="Add new class", width=25, height=10)
+        addingClassButton = Button(self.root, text="Add new class", width=25, height=10,command=lambda:ButtonFunctions.addClass(self.database))
+        # addingClassButton = Button(self.root, text="Add new class", width=25, height=10) # placeholder
         addingClassButton.grid(row=0, column=0)
 
         deleteClassButton = Button(self.root, text="Delete class", width=25, height=10)
