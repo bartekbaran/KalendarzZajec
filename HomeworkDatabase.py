@@ -1,11 +1,11 @@
 from turtle import pd
 import pyodbc
 
-class Database():
+class HomeworkDatabase():
     def __init__(self):
         self.connectionString = (
             r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};'
-            r'DBQ=C:\Users\barte\Documents\GitHub\KalendarzZajec\schedule.accdb;'
+            r'DBQ=C:\Users\barte\Documents\GitHub\Kalendarz\schedule.accdb;'
         )
         self.connection = pyodbc.connect(self.connectionString, autocommit=True)
         self.cursor = self.connection.cursor()
@@ -30,10 +30,12 @@ class Database():
 
     def addingToDatabase(self, les, sta, end, dotw):
         self.cursor.execute("INSERT INTO LessonSchedule (Lesson, Start, End, DayOfTheWeek) VALUES (?, ?, ?, ?)",
-                       (les, sta, end, dotw,))
+                       (les, sta, end, dotw))
         self.cursor.commit()
 
+    def deleteFromDatabase(self, name, start, end, dotw):
+        self.cursor.execute("DELETE FROM LessonSchedule WHERE Lesson=(?) AND Start=(?) AND End=(?) AND DayOfTheWeek=(?)", (name), (start), (end), (dotw))
+
     def __del__(self):
-        print("Destruktor")
         self.cursor.close()
         self.connection.close()
