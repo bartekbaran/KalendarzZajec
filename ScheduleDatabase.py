@@ -7,36 +7,35 @@ class ScheduleDatabase():
             r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};'
             r'DBQ=C:\Users\barte\Documents\GitHub\Kalendarz\schedule.accdb;'
         )
-        self.connection = pyodbc.connect(self.connectionString, autocommit=True)
-        self.cursor = self.connection.cursor()
+        self.scheduleConnection = pyodbc.connect(self.connectionString, autocommit=True)
+        self.scheduleCursor = self.scheduleConnection.cursor()
         # self.printDatabase()
 
     def printDatabase(self):
-        self.cursor.execute('Select * from LessonSchedule')
+        self.scheduleCursor.execute('Select * from LessonSchedule')
         for row in self.cursor.fetchall():
             print(row)
 
     def getDatabase(self):
         listOfClasses = []
-        self.cursor.execute('Select * from LessonSchedule')
-        for row in self.cursor.fetchall():
+        self.scheduleCursor.execute('Select * from LessonSchedule')
+        for row in self.scheduleCursor.fetchall():
             listOfClasses.append(row)
         return listOfClasses
 
     def getNumberOfRecords(self):
-        self.cursor.execute('Select * from LessonSchedule')
-        rows = self.cursor.fetchall()
+        self.scheduleCursor.execute('Select * from LessonSchedule')
+        rows = self.scheduleCursor.fetchall()
         return len(rows)
 
     def addingToDatabase(self, les, sta, end, dotw):
-        self.cursor.execute("INSERT INTO LessonSchedule (Lesson, Start, End, DayOfTheWeek) VALUES (?, ?, ?, ?)",
+        self.scheduleCursor.execute("INSERT INTO LessonSchedule (Lesson, Start, End, DayOfTheWeek) VALUES (?, ?, ?, ?)",
                        (les, sta, end, dotw))
-        self.cursor.commit()
+        self.scheduleCursor.commit()
 
     def deleteFromDatabase(self, name, start, end, dotw):
-        self.cursor.execute("DELETE FROM LessonSchedule WHERE Lesson=(?) AND Start=(?) AND End=(?) AND DayOfTheWeek=(?)", (name), (start), (end), (dotw))
-        self.cursor.commmit()
+        self.scheduleCursor.execute("DELETE FROM LessonSchedule WHERE Lesson=(?) AND Start=(?) AND End=(?) AND DayOfTheWeek=(?)", (name), (start), (end), (dotw))
 
     def __del__(self):
-        self.cursor.close()
-        self.connection.close()
+        self.scheduleCursor.close()
+        self.scheduleConnection.close()

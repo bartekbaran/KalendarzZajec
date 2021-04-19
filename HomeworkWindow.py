@@ -2,10 +2,11 @@ from HomeworkDatabase import *
 from tkinter import *
 
 class HomeworkWindow():
-    def __init__(self, database, root):
+    def __init__(self, database, root, application):
         self.root = root
         self.root.config(background="#FFFFFF")
 
+        self.application = application
         self.database = database
 
         self.homeworkNameVar = StringVar()
@@ -35,7 +36,9 @@ class HomeworkWindow():
         self.homeworkDueToVar = self.homeworkDueToEntry.get()
         self.homeworkDescriptionVar = self.homeworkDescriptionEntry.get()
         self.database.addingToDatabase(self.homeworkNameVar, self.homeworkDueToVar, self.homeworkDescriptionVar)
-        self.deleteWindow()
+        self.clearWindow()
 
-    def deleteWindow(self):
-        self.root.destroy()
+    def clearWindow(self):
+        for child in self.root.winfo_children():
+            child.destroy()
+        self.application.refreshingWindow(self.root)

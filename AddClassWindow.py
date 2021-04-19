@@ -3,10 +3,11 @@ import tkinter as tk
 from tkinter import ttk
 
 class AddClassWindow():
-    def __init__(self, database, root):
+    def __init__(self, database, root, application):
         self.root = root
         self.root.config(background="#FFFFFF")
 
+        self.application = application
         self.database = database
 
         self.eventNameVar = tk.StringVar()
@@ -47,7 +48,9 @@ class AddClassWindow():
         self.eventEndVar = self.eventEndEntry.get()
         self.eventDateVar = self.eventDateCombo.get()
         self.database.addingToDatabase(self.eventNameVar, self.eventStartVar, self.eventEndVar, self.eventDateVar)
-        self.deleteWindow()
+        self.clearWindow()
 
-    def deleteWindow(self):
-        self.root.destroy()
+    def clearWindow(self):
+        for child in self.root.winfo_children():
+            child.destroy()
+        self.application.refreshingWindow(self.root)

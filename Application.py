@@ -9,10 +9,12 @@ class Application():
     def __init__(self):
         self.scheduleDatabase = ScheduleDatabase()
         self.homeworkDatabase = HomeworkDatabase()
+
         self.root = Tk()
         self.root.title('Corona Calendar')
         self.root.config(background="#FFFFFF")
         self.root.geometry("{0}x{1}+0+0".format(self.root.winfo_screenwidth() - 9, self.root.winfo_screenheight() - 7))
+
         self.settingUpFirstView()
 
     def settingUpFirstView(self):
@@ -68,21 +70,24 @@ class Application():
                 rowCounter[4] += 1
 
     def newWindow(self, id):
-        root = Tk()
+        self.clearWindow()
         if id == 1:
-            newWindow = AddClassWindow(self.scheduleDatabase, root)
+            newWindow = AddClassWindow(self.scheduleDatabase, self.root, self)
         elif id == 2:
-            newWindow = DeleteClassWindow(self.scheduleDatabase, root)
+            newWindow = DeleteClassWindow(self.scheduleDatabase, self.root, self)
         elif id == 3:
-            newWindow = HomeworkWindow(self.homeworkDatabase, root)
+            newWindow = HomeworkWindow(self.homeworkDatabase, self.root, self)
         else:
             print("placeholder")
         newWindow.settingUpView()
-        root.mainloop()
 
     def clearWindow(self):
         for child in self.root.winfo_children():
             child.destroy()
+
+    def refreshingWindow(self, root):
+        self.root = root
+        self.settingUpFirstView()
 
     def start(self):
         self.root.mainloop()

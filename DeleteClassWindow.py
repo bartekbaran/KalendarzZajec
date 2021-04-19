@@ -2,11 +2,13 @@ from ScheduleDatabase import *
 from tkinter import *
 
 class DeleteClassWindow():
-    def __init__(self, database, root):
+    def __init__(self, database, root, application):
         self.root = root
         self.root.config(background="#FFFFFF")
 
+        self.application = application
         self.database = database
+
         self.settingUpView()
 
     def settingUpView(self):
@@ -43,7 +45,9 @@ class DeleteClassWindow():
 
     def deleteFromDatabase(self, string):
         self.database.deleteFromDatabase(string[1], string[2], string[3], string[4])
-        self.deleteWindow()
+        self.clearWindow()
 
-    def deleteWindow(self):
-        self.root.destroy()
+    def clearWindow(self):
+        for child in self.root.winfo_children():
+            child.destroy()
+        self.application.refreshingWindow(self.root)
