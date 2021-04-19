@@ -12,29 +12,31 @@ class HomeworkDatabase():
         # self.printDatabase()
 
     def printDatabase(self):
-        self.cursor.execute('Select * from LessonSchedule')
+        self.cursor.execute('Select * from Homework')
         for row in self.cursor.fetchall():
             print(row)
 
     def getDatabase(self):
         listOfClasses = []
-        self.cursor.execute('Select * from LessonSchedule')
+        self.cursor.execute('Select * from Homework')
         for row in self.cursor.fetchall():
             listOfClasses.append(row)
         return listOfClasses
 
     def getNumberOfRecords(self):
-        self.cursor.execute('Select * from LessonSchedule')
+        self.cursor.execute('Select * from Homework')
         rows = self.cursor.fetchall()
         return len(rows)
 
-    def addingToDatabase(self, les, sta, end, dotw):
-        self.cursor.execute("INSERT INTO LessonSchedule (Lesson, Start, End, DayOfTheWeek) VALUES (?, ?, ?, ?)",
-                       (les, sta, end, dotw))
+    def addingToDatabase(self, name, dueTo, desc):
+        print(name, dueTo, desc)
+        self.cursor.execute("INSERT INTO Homework (Task, DueTo, Description) VALUES (?, ?, ?)",
+                            (name, dueTo, desc))
         self.cursor.commit()
 
-    def deleteFromDatabase(self, name, start, end, dotw):
-        self.cursor.execute("DELETE FROM LessonSchedule WHERE Lesson=(?) AND Start=(?) AND End=(?) AND DayOfTheWeek=(?)", (name), (start), (end), (dotw))
+    def deleteFromDatabase(self, task, dueTo, desc):
+        self.cursor.execute("DELETE FROM Homework WHERE Task=(?) AND DueTo=(?) AND Description=(?)", (task), (dueTo),
+                            (desc))
 
     def __del__(self):
         self.cursor.close()

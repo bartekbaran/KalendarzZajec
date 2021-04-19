@@ -14,8 +14,6 @@ class AddClassWindow():
         self.eventEndVar = tk.StringVar()
         self.eventDateVar = tk.StringVar()
 
-        self.settingUpView()
-
     def settingUpView(self):
         self.eventNameLabel = tk.Label(self.root, text="Event name: ").grid(row=0, column=0)
         self.eventNameEntry = tk.Entry(self.root, textvariable=self.eventNameVar)
