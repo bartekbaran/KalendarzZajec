@@ -12,7 +12,7 @@ class ScheduleDatabase():
         self.scheduleConnection = pyodbc.connect(self.connectionString, autocommit=True)
         self.scheduleCursor = self.scheduleConnection.cursor()
         try:
-            self.scheduleCursor.execute("""CREATE TABLE LessonSchedule (id autoincrement, Lesson varchar(50), TimeOfStart varchar(50), TimeOfEnd varchar(50), DayOfTheWeek varchar(50))""")
+            self.scheduleCursor.execute("""CREATE TABLE LessonSchedule (id autoincrement, Lesson varchar(64), TimeOfStart varchar(32), TimeOfEnd varchar(32), DayOfTheWeek varchar(32), PlatformType varchar(32), URL varchar(255))""")
             self.scheduleCursor.commit()
         except:
             print("Tabela juz istnieje!")
@@ -35,10 +35,9 @@ class ScheduleDatabase():
         rows = self.scheduleCursor.fetchall()
         return len(rows)
 
-    def addingToDatabase(self, les, sta, end, dotw):
-
-        self.scheduleCursor.execute("INSERT INTO LessonSchedule (Lesson, TimeOfStart, TimeOfEnd, DayOfTheWeek) VALUES (?, ?, ?, ?)",
-                       (les, sta, end, dotw))
+    def addingToDatabase(self, les, sta, end, dotw, platform, url):
+        self.scheduleCursor.execute("INSERT INTO LessonSchedule (Lesson, TimeOfStart, TimeOfEnd, DayOfTheWeek, PlatformType, URL) VALUES (?, ?, ?, ?, ?, ?)",
+                       (les, sta, end, dotw, platform, url))
         self.scheduleCursor.commit()
 
     def deleteFromDatabase(self, name, start, end, dotw):
