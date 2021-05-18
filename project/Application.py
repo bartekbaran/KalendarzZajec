@@ -20,9 +20,9 @@ class Application():
 
         self.url = ""
 
-        self.settingUpFirstView()
+        self.settingUpView()
 
-    def settingUpFirstView(self):
+    def settingUpView(self):
         week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
         dayOfTheWeekLabel = []
 
@@ -36,11 +36,8 @@ class Application():
         homeworkButton = Button(self.root, text="Homework", width=25, height=10, command=lambda:self.newWindow(3), font=("Helvetica", 10), bd=0, padx=1)
         homeworkButton.grid(row=2, column=0)
 
-        goToClassButton = Button(self.root, text="Go to class", width=25, height=10, command=lambda:self.openApplication(), font=("Helvetica", 10), bd=0, padx=1)
-        goToClassButton.grid(row=3, column=0)
-
-        changeViewButton = Button(self.root, text="Change view", width=25, height=10, command=lambda:self.clearWindow(), font=("Helvetica", 10), bd=0, padx=1)
-        changeViewButton.grid(row=4, column=0)
+        exitButton = Button(self.root, text="Exit", width=25, height=10, command=lambda:self.root.destroy(), font=("Helvetica", 10), bd=0, padx=1)
+        exitButton.grid(row=3, column=0)
 
         for i in range(5):
             dayOfTheWeekLabel.append(Label(self.root, text=week[i], width=40, height=10, background="#918f8a", font=("Helvetica", 10)))
@@ -88,7 +85,7 @@ class Application():
         elif id == 3:
             newWindow = HomeworkWindow(self.homeworkDatabase, self.root, self)
         else:
-            print("placeholder")
+            print("Placeholder")
         newWindow.settingUpView()
 
     def clearWindow(self):
@@ -104,7 +101,7 @@ class Application():
 
     def refreshingWindow(self, root):
         self.root = root
-        self.settingUpFirstView()
+        self.settingUpView()
 
     def start(self):
         self.root.mainloop()

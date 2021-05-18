@@ -12,17 +12,17 @@ class HomeworkDatabase():
         self.homeworkConnection = pyodbc.connect(self.connectionString, autocommit=True)
         self.homeworkCursor = self.homeworkConnection.cursor()
         try:
-            self.homeworkCursor.execute("""CREATE TABLE Homework (id autoincrement, Task varchar(50), DueTo varchar(50), Description varchar(255)""")
+            self.homeworkCursor.execute('CREATE TABLE Homework (id autoincrement, Task varchar(50), DueTo varchar(50), Description varchar(255))')
             self.homeworkCursor.commit()
         except:
-            print("Tabela juz istnieje!")
+            print("Table already exists!")
 
     def printDatabase(self):
         self.homeworkCursor.execute('SELECT * FROM Homework')
         for row in self.homeworkCursor.fetchall():
             print(row)
 
-    def getDatabase(self):
+    def sortDatabase(self):
         listOfClasses = []
         self.homeworkCursor.execute('SELECT * FROM Homework')
         for row in self.homeworkCursor.fetchall():
@@ -36,18 +36,13 @@ class HomeworkDatabase():
 
     def addingToDatabase(self, name, dueTo, desc):
         print(name, dueTo, desc)
-        self.homeworkCursor.execute("INSERT INTO Homework (Task, DueTo, Description) VALUES (?, ?, ?)",
+        self.homeworkCursor.execute('INSERT INTO Homework (Task, DueTo, Description) VALUES (?, ?, ?)',
                             (name, dueTo, desc))
         self.homeworkCursor.commit()
 
     def deleteFromDatabase(self, task, dueTo, desc):
-        self.homeworkCursor.execute("DELETE FROM Homework WHERE Task=(?) AND DueTo=(?) AND Description=(?)", (task, dueTo, desc))
+        self.homeworkCursor.execute('DELETE FROM Homework WHERE Task=(?) AND DueTo=(?) AND Description=(?)', (task, dueTo, desc))
         self.homeworkCursor.commit()
-
-    def sortDatabase(self):
-        self.homeworkCursor.execute('SELECT * FROM Homework ORDER BY DueTo')
-        for row in self.homeworkCursor.fetchall():
-            print(row)
 
     def __del__(self):
         self.homeworkCursor.close()

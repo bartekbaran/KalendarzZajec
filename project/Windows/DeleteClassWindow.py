@@ -48,8 +48,8 @@ class DeleteClassWindow():
                 self.deleteClassButtons[x].grid(row=rowCounter[4], column=5)
                 rowCounter[4] += 1
 
-    def deleteFromDatabase(self, string):
-        self.database.deleteFromDatabase(string[1], string[2], string[3], string[4])
+    def deleteFromDatabase(self, button):
+        self.database.deleteFromDatabase(button[1], button[2], button[3], button[4])
         self.clearWindow()
 
     def clearWindow(self):
