@@ -169,10 +169,15 @@ class Application():
 
 
     def openApplication(self, url):
+        settingsFile = open("settings.txt", "r")
+        for line in settingsFile.readlines():
+            if str(line[:5]) == "Path:":
+                print(line[5:len(line)-1])
+                self.path = line[5:len(line)-1]
         webbrowser.register('chrome',
                             None,
                             webbrowser.BackgroundBrowser(
-                                "C:\Program Files\Google\Chrome\Application\chrome.exe"))
+                                f'{self.path}'))
         webbrowser.get('chrome').open(url)
 
 

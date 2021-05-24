@@ -33,6 +33,9 @@ class SettingsWindow():
 
     def gettingStrings(self):
         self.defaultBrowserPath = self.urlEntry.get()
+        self.settingsFile = open("settings.txt", "a+")
+        self.settingsFile.write(str("Path:"+f'{self.defaultBrowserPath}\n'))
+
 
     def creatingIconImage(self, imagePath):
         self.icon = PIL.ImageTk.PhotoImage(PIL.Image.open(f"images/{imagePath}"))
