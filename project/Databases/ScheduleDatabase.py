@@ -1,3 +1,4 @@
+from turtle import pd
 import pyodbc
 import os
 
@@ -14,7 +15,7 @@ class ScheduleDatabase():
             self.scheduleCursor.execute("""CREATE TABLE LessonSchedule (id autoincrement, Lesson varchar(64), TimeOfStart varchar(32), TimeOfEnd varchar(32), DayOfTheWeek varchar(32), PlatformType varchar(32), URL varchar(255))""")
             self.scheduleCursor.commit()
         except:
-            print("Table already exists!")
+            print("Tabela juz istnieje!")
 
 
     def printDatabase(self):
@@ -24,7 +25,7 @@ class ScheduleDatabase():
 
     def getDatabase(self):
         listOfClasses = []
-        self.scheduleCursor.execute("SELECT * FROM LessonSchedule ORDER BY id")
+        self.scheduleCursor.execute("SELECT * FROM LessonSchedule")
         for row in self.scheduleCursor.fetchall():
             listOfClasses.append(row)
         return listOfClasses
@@ -43,11 +44,11 @@ class ScheduleDatabase():
         self.scheduleCursor.execute("DELETE FROM LessonSchedule WHERE Lesson=(?) AND TimeOfStart=(?) AND TimeOfEnd=(?) AND DayOfTheWeek=(?)", (name, start, end, dotw))
 
     def sortDatabase(self):
-        listOfHomework = []
+        listOfClasses = []
         self.scheduleCursor.execute('SELECT * FROM LessonSchedule')
         for row in self.scheduleCursor.fetchall():
-            listOfHomework.append(row)
-        return listOfHomework
+            listOfClasses.append(row)
+        return listOfClasses
 
     def __del__(self):
         self.scheduleCursor.close()

@@ -2,6 +2,8 @@ import re
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+import PIL.Image
+import PIL.ImageTk
 
 class AddClassWindow():
     def __init__(self, database, root, application):
@@ -19,42 +21,65 @@ class AddClassWindow():
         self.eventUrlVar = tk.StringVar()
 
     def settingUpView(self):
-        self.eventNameLabel = tk.Label(self.root, text="Event name: ").grid(row=0, column=0)
-        self.eventNameEntry = tk.Entry(self.root, textvariable=self.eventNameVar)
-        self.eventNameEntry.grid(row=0, column=1)
+        self.root.geometry('400x330+700+300')
+        self.root.configure(bg="#22333B")
 
-        self.eventStartLabel = tk.Label(self.root, text="Time of start: ").grid(row=1, column=0)
+        self.formTitle = tk.Label(self.root, text=" Adding new class", font=("Helvetica", 24), bg="#22333B", fg="#FFFFFF",
+                                  pady=20).grid(row=0, columnspan=2)
+
+        self.eventNameEntry = tk.Entry(self.root, textvariable=self.eventNameVar, width=60)
+        self.eventNameEntry.insert(0, "                                       --Insert event name--")
+        self.eventNameEntry.grid(row=1, column=0, columnspan=2, pady=5, padx=15)
+
         self.eventStartEntry = tk.Entry(self.root, textvariable=self.eventStartVar)
-        self.eventStartEntry.grid(row=1, column=1)
+        self.eventStartEntry.insert(0, " --Insert time of start-- ")
+        self.eventStartEntry.grid(row=2, column=0, pady=5)
 
-        self.eventEndLabel = tk.Label(self.root, text="End: ").grid(row=2, column=0)
         self.eventEndEntry = tk.Entry(self.root, textvariable=self.eventEndVar)
-        self.eventEndEntry.grid(row=2, column=1)
+        self.eventEndEntry.insert(0, " --Insert time of end-- ")
+        self.eventEndEntry.grid(row=2, column=1, pady=5)
 
-        self.eventDateLabel = tk.Label(self.root, text="Day of the Week: ").grid(row=3, column=0)
-        self.eventDateCombo = ttk.Combobox(self.root, textvariable=self.eventDateVar)
+        self.eventDateCombo = ttk.Combobox(self.root, textvariable=self.eventDateVar, width=40)
+        self.eventDateCombo.insert(0, "                       --Select day of a class--")
         self.eventDateCombo['values'] = ('Monday',
-                                    'Tuesday',
-                                    'Wednesday',
-                                    'Thursday',
-                                    'Friday')
-        self.eventDateCombo.grid(row=3, column=1)
+                                         'Tuesday',
+                                         'Wednesday',
+                                         'Thursday',
+                                         'Friday')
+        self.eventDateCombo.grid(row=3, column=0, columnspan=2, pady=5)
 
-        self.eventPlatformLabel = tk.Label(self.root, text="Platform: ").grid(row=4, column=0)
-        self.eventPlatformCombo = ttk.Combobox(self.root, textvariable=self.eventPlatformVar)
+        self.eventPlatformCombo = ttk.Combobox(self.root, textvariable=self.eventPlatformVar, width=40)
+        self.eventPlatformCombo.insert(0, "                       --Choose platform--")
         self.eventPlatformCombo['values'] = ('Zoom',
-                                         'Microsoft Teams',
-                                         'Upel',
-                                         'Webex')
-        self.eventPlatformCombo.grid(row=4, column=1)
+                                             'Microsoft Teams',
+                                             'Upel',
+                                             'Webex')
+        self.eventPlatformCombo.grid(row=4, column=0, columnspan=2, pady=5)
 
-        self.eventUrlLabel = tk.Label(self.root, text="URL: ").grid(row=5, column=0)
-        self.eventUrlEntry = tk.Entry(self.root, textvariable=self.eventUrlVar)
-        self.eventUrlEntry.grid(row=5, column=1)
+        self.eventUrlEntry = tk.Entry(self.root, textvariable=self.eventUrlVar, width=60)
+        self.eventUrlEntry.insert(0, "                                             --Insert URL--")
+        self.eventUrlEntry.grid(row=5, column=0, columnspan=2, pady=5)
 
-        self.addToDatabaseButton = tk.Button(self.root, text="Add", bd=1, bg='#b7c8c9', activebackground='#94a0a1',
-                                        command=lambda:self.gettingStrings())
-        self.addToDatabaseButton.grid(row=6, column=0)
+        self.addClassIcon = self.creatingIconImage("addClassIcon.png")
+        self.addToDatabaseButton = tk.Button(self.root, image=self.addClassIcon, bd=0, bg="#22333B",
+                                             command=lambda: self.gettingStrings())
+        self.addToDatabaseButton.grid(row=7, column=1, pady=20)
+
+        self.backToMainMenuIcon = self.creatingIconImage("backIcon.png")
+        self.backToMainWindowButton = tk.Button(self.root, image=self.backToMainMenuIcon, bd=0, bg="#22333B",
+                                                command=lambda: self.clearWindow())
+        self.backToMainWindowButton.grid(row=7, column=0, pady=20)
+
+    def creatingIconImage(self, imagePath):
+        self.icon = PIL.ImageTk.PhotoImage(PIL.Image.open(f"images/{imagePath}"))
+        return self.icon
+
+
+    def isNull(self):
+        if len(self.eventNameVar) == 0 or len(self.eventStartVar) == 0 or len(self.eventEndVar) == 0 or len(self.eventDateVar) == 0 or len(self.eventPlatformVar) == 0 or len(self.eventUrlVar) == 0:
+            return False
+        else:
+            return True
 
     def gettingStrings(self):
         self.eventNameVar = self.eventNameEntry.get()
@@ -64,9 +89,13 @@ class AddClassWindow():
         self.eventPlatformVar = self.eventPlatformCombo.get()
         self.eventUrlVar = self.eventUrlEntry.get()
 
-        #if self.dateChecker() and self.platformChecker():
-        self.database.addingToDatabase(self.eventNameVar, self.eventStartVar, self.eventEndVar, self.eventDateVar, self.eventPlatformVar, self.eventUrlVar)
-        self.clearWindow()
+        if self.isNull():
+            if self.dateChecker() and self.platformChecker():
+                self.database.addingToDatabase(self.eventNameVar, self.eventStartVar, self.eventEndVar,
+                                               self.eventDateVar, self.eventPlatformVar, self.eventUrlVar)
+                self.clearWindow()
+        else:
+            messagebox.showinfo("Error", "Incorrect entries")
 
     def dateChecker(self):
         if (len(self.eventStartVar) == 4 or len(self.eventStartVar) == 5) and len(self.eventEndVar) == 5:
