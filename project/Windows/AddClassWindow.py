@@ -8,10 +8,17 @@ import PIL.ImageTk
 class AddClassWindow():
     def __init__(self, database, root, application):
         self.root = root
-        self.root.config(background="#FFFFFF")
 
         self.application = application
         self.database = database
+
+        self.colorVersion = application.colorVersion
+        self.bgColor = application.bgColor
+        self.buttonColor = application.buttonColor
+        self.textColor = application.textColor
+        self.frameColor = application.frameColor
+
+        self.root.config(background=self.bgColor)
 
         self.eventNameVar = tk.StringVar()
         self.eventStartVar = tk.StringVar()
@@ -22,20 +29,20 @@ class AddClassWindow():
 
     def settingUpView(self):
         self.root.geometry('400x330+700+300')
-        self.root.configure(bg="#22333B")
+        self.root.configure(bg=self.bgColor)
 
-        self.formTitle = tk.Label(self.root, text=" Adding new class", font=("Helvetica", 24), bg="#22333B", fg="#FFFFFF",
+        self.formTitle = tk.Label(self.root, text=" Adding new class", font=("Helvetica", 24), bg=self.bgColor, fg=self.textColor,
                                   pady=20).grid(row=0, columnspan=2)
 
-        self.eventNameEntry = tk.Entry(self.root, textvariable=self.eventNameVar, width=60)
+        self.eventNameEntry = tk.Entry(self.root, textvariable=self.eventNameVar, width=60, bg=self.bgColor, fg=self.textColor)
         self.eventNameEntry.insert(0, "                                       --Insert event name--")
         self.eventNameEntry.grid(row=1, column=0, columnspan=2, pady=5, padx=15)
 
-        self.eventStartEntry = tk.Entry(self.root, textvariable=self.eventStartVar)
+        self.eventStartEntry = tk.Entry(self.root, textvariable=self.eventStartVar, bg=self.bgColor, fg=self.textColor)
         self.eventStartEntry.insert(0, " --Insert time of start-- ")
         self.eventStartEntry.grid(row=2, column=0, pady=5)
 
-        self.eventEndEntry = tk.Entry(self.root, textvariable=self.eventEndVar)
+        self.eventEndEntry = tk.Entry(self.root, textvariable=self.eventEndVar, bg=self.bgColor, fg=self.textColor)
         self.eventEndEntry.insert(0, " --Insert time of end-- ")
         self.eventEndEntry.grid(row=2, column=1, pady=5)
 
@@ -56,24 +63,23 @@ class AddClassWindow():
                                              'Webex')
         self.eventPlatformCombo.grid(row=4, column=0, columnspan=2, pady=5)
 
-        self.eventUrlEntry = tk.Entry(self.root, textvariable=self.eventUrlVar, width=60)
+        self.eventUrlEntry = tk.Entry(self.root, textvariable=self.eventUrlVar, width=60, bg=self.bgColor, fg=self.textColor)
         self.eventUrlEntry.insert(0, "                                             --Insert URL--")
         self.eventUrlEntry.grid(row=5, column=0, columnspan=2, pady=5)
 
-        self.addClassIcon = self.creatingIconImage("addClassIcon.png")
-        self.addToDatabaseButton = tk.Button(self.root, image=self.addClassIcon, bd=0, bg="#22333B",
+        self.addClassIcon = self.creatingIconImage(self.colorVersion, "addClassIcon.png")
+        self.addToDatabaseButton = tk.Button(self.root, image=self.addClassIcon, bd=0, bg=self.bgColor,
                                              command=lambda: self.gettingStrings())
         self.addToDatabaseButton.grid(row=7, column=1, pady=20)
 
-        self.backToMainMenuIcon = self.creatingIconImage("backIcon.png")
-        self.backToMainWindowButton = tk.Button(self.root, image=self.backToMainMenuIcon, bd=0, bg="#22333B",
+        self.backToMainMenuIcon = self.creatingIconImage(self.colorVersion, "backIcon.png")
+        self.backToMainWindowButton = tk.Button(self.root, image=self.backToMainMenuIcon, bd=0, bg=self.bgColor,
                                                 command=lambda: self.clearWindow())
         self.backToMainWindowButton.grid(row=7, column=0, pady=20)
 
-    def creatingIconImage(self, imagePath):
-        self.icon = PIL.ImageTk.PhotoImage(PIL.Image.open(f"images/{imagePath}"))
+    def creatingIconImage(self, colorVersion, imagePath):
+        self.icon = PIL.ImageTk.PhotoImage(PIL.Image.open(f"images/{colorVersion}/{imagePath}"))
         return self.icon
-
 
     def isNull(self):
         if len(self.eventNameVar) == 0 or len(self.eventStartVar) == 0 or len(self.eventEndVar) == 0 or len(self.eventDateVar) == 0 or len(self.eventPlatformVar) == 0 or len(self.eventUrlVar) == 0:
